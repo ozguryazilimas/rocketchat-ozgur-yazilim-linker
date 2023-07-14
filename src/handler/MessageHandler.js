@@ -7,12 +7,26 @@ class MessageHandler {
         this.settings = settings;
     }
     async checkPreMessageModify(message, read, http) {
-        if ((message.text && await this.hasIssues(message.text)) || (message.text && await this.secondHasIssues(message.text))) {
+        if (message.text && await this.hasIssues(message.text)) {
             return true;
         }
         if (this.settings.isModifyAttachments && message.attachments) {
             for (const attachment of message.attachments) {
-                if ((attachment.text && await this.hasIssues(attachment.text)) || (attachment.text && await this.secondHasIssues(attachment.text))) {
+                if (attachment.text && await this.hasIssues(attachment.text)) {
+                    return true;
+                }
+            }
+        }
+        //return false;
+        this.secondCheckPreMessageModify(message.text, read.text, http.text)
+    }
+    async secondCheckPreMessageModify(message, read, http) {
+        if (message.text && await this.secondHasIssues(message.text)) {
+            return true;
+        }
+        if (this.settings.isModifyAttachments && message.attachments) {
+            for (const attachment of message.attachments) {
+                if (attachment.text && await this.secondHasIssues(attachment.text)) {
                     return true;
                 }
             }
@@ -22,10 +36,17 @@ class MessageHandler {
     async executePreMessageModify(message, builder, read, http, persistence) {
         if (message.text) {
             await this.modifyText(message.text).then((messageText) => builder.setText(messageText));
-            await this.secondModifyText(message.text).then((messageText) => builder.setText(messageText));
         }
         if (this.settings.isModifyAttachments && message.attachments) {
             await this.modifyAttachments(message.attachments).then((attachments) => builder.setAttachments(attachments));
+        }
+        return builder.getMessage();
+    }
+    async secondExecutePreMessageModify(message, builder, read, http, persistence) {
+        if (message.text) {
+            await this.secondModifyText(message.text).then((messageText) => builder.setText(messageText));
+        }
+        if (this.settings.isModifyAttachments && message.attachments) {
             await this.secondModifyAttachments(message.attachments).then((attachments) => builder.setAttachments(attachments));
         }
         return builder.getMessage();
