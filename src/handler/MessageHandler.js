@@ -26,6 +26,7 @@ class MessageHandler {
         }
         if (this.settings.isModifyAttachments && message.attachments) {
             await this.modifyAttachments(message.attachments).then((attachments) => builder.setAttachments(attachments));
+            await this.secondModifyAttachments(message.attachments).then((attachments) => builder.setAttachments(attachments));
         }
         return builder.getMessage();
     }
@@ -47,6 +48,16 @@ class MessageHandler {
     async modifyAttachment(attachment) {
         if (attachment.text) {
             const newAttachment = Object.assign(Object.assign({}, attachment), { text: await this.modifyText(attachment.text) });
+            return newAttachment;
+        }
+        return attachment;
+    }
+    async secondModifyAttachments(attachments) {
+        return Promise.all(attachments.map((attachment) => this.secondModifyAttachment(attachment)));
+    }
+    async secondModifyAttachment(attachment) {
+        if (attachment.text) {
+            const newAttachment = Object.assign(Object.assign({}, attachment), { text: await this.secondModifyText(attachment.text) });
             return newAttachment;
         }
         return attachment;
