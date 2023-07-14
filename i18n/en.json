@@ -1,6 +1,6 @@
 {
-  "YouTrack_Base_URL": "YouTrack URL",
-  "YouTrack_Base_URL_Description": "YouTrack base URL",
+  "OzgurYazilim_Base_URL": "Özgür Yazılım URL",
+  "OzgurYazilim_Base_URL_Description": "Özgür Yazılım base URL",
   "Issue_Pattern": "Issue pattern",
   "Issue_Pattern_Description": "Regex pattern to match issues",
   "Max_Search_Attempts": "Max search attempts",

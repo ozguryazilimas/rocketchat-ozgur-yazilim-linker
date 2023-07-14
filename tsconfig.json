@@ -13,7 +13,7 @@
   },
   "include": [
     "src/**/*",
-    "./YouTrackLinkerApp.ts"
+    "./OzgurYazilimLinker.ts"
   ],
   "exclude": [
     "**/*.test.ts",
