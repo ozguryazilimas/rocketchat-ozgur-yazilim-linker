@@ -19,9 +19,23 @@ class MessageHandler {
         }
         return false;
     }
+    async checkPreMessageModify(message, read, http) {
+        if (message.text && await this.secondHasIssues(message.text)) {
+            return true;
+        }
+        if (this.settings.isModifyAttachments && message.attachments) {
+            for (const attachment of message.attachments) {
+                if (attachment.text && await this.secondHasIssues(attachment.text)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
     async executePreMessageModify(message, builder, read, http, persistence) {
         if (message.text) {
             await this.modifyText(message.text).then((messageText) => builder.setText(messageText));
+            await this.secondModifyText(message.text).then((messageText) => builder.setText(messageText));
         }
         if (this.settings.isModifyAttachments && message.attachments) {
             await this.modifyAttachments(message.attachments).then((attachments) => builder.setAttachments(attachments));
@@ -33,6 +47,12 @@ class MessageHandler {
     }
     async modifyText(text) {
         return this.textMessage(text).linkIssues();
+    }
+    async secondHasIssues(text) {
+        return this.textMessage(text).secondHasIssues();
+    }
+    async secondModifyText(text) {
+        return this.textMessage(text).secondLinkIssues();
     }
     async modifyAttachments(attachments) {
         return Promise.all(attachments.map((attachment) => this.modifyAttachment(attachment)));
