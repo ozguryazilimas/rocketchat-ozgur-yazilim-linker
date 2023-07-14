@@ -32,7 +32,7 @@ class TextMessage {
         }
     }
     async secondHasIssues() {
-        return !this.secondLinkIssues().next().done;
+        return !this.issueIterator().next().done;
     }
     async secondLinkIssues() {
         let text = this.text;
