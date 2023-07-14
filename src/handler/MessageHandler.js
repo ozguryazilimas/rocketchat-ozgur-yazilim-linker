@@ -12,7 +12,7 @@ class MessageHandler {
         }
         if (this.settings.isModifyAttachments && message.attachments) {
             for (const attachment of message.attachments) {
-                if ((attachment.text && await this.hasIssues(attachment.text)) || (attachment.text && await this.hasIssues(attachment.text))) {
+                if ((attachment.text && await this.hasIssues(attachment.text)) || (attachment.text && await this.secondHasIssues(attachment.text))) {
                     return true;
                 }
             }

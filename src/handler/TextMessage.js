@@ -58,7 +58,7 @@ class TextMessage {
         return new IssueIterator_1.IssueIterator(this.text, this.buildIssuePattern(), Settings_1.Settings.EXCLUDE_PATTERNS, this.settings.maxSearchAttempts);
     }
     secondIssueIterator() {
-        return new IssueIterator_1.IssueIterator(this.text, this.buildIssuePattern(), Settings_1.Settings.EXCLUDE_PATTERNS, this.settings.maxSearchAttempts);
+        return new IssueIterator_1.IssueIterator(this.text, this.buildSecondIssuePattern(), Settings_1.Settings.EXCLUDE_PATTERNS, this.settings.maxSearchAttempts);
     }
     markdownIssueLink(issueText) {
         const UrlIssueText = issueText.substring(1)
