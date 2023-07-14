@@ -7,25 +7,12 @@ class MessageHandler {
         this.settings = settings;
     }
     async checkPreMessageModify(message, read, http) {
-        if (message.text && await this.hasIssues(message.text)) {
+        if ((message.text && await this.hasIssues(message.text)) || (message.text && await this.secondHasIssues(message.text))) {
             return true;
         }
         if (this.settings.isModifyAttachments && message.attachments) {
             for (const attachment of message.attachments) {
-                if (attachment.text && await this.hasIssues(attachment.text)) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-    async checkPreMessageModify(message, read, http) {
-        if (message.text && await this.secondHasIssues(message.text)) {
-            return true;
-        }
-        if (this.settings.isModifyAttachments && message.attachments) {
-            for (const attachment of message.attachments) {
-                if (attachment.text && await this.secondHasIssues(attachment.text)) {
+                if ((attachment.text && await this.hasIssues(attachment.text)) || (attachment.text && await this.hasIssues(attachment.text))) {
                     return true;
                 }
             }
