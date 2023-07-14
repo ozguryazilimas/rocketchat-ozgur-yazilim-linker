@@ -1,17 +1,17 @@
 {
-    "id": "9408b583-2f0e-4987-a341-daa171d761ce",
+    "id": "e5f78f9e-37dc-49b5-85bc-b517b2b5679z",
     "version": "1.2.1",
     "requiredApiVersion": "^1.12.0",
     "iconFile": "icon.png",
     "author": {
-        "name": "Zakhar Petrov",
-        "homepage": "https://github.com/zakhar-petrov",
-        "support": "https://github.com/zakhar-petrov/rocketchat-youtrack-linker/issues"
+        "name": "OzgurYazilim",
+        "homepage": "https://www.ozguryazilim.com.tr",
+        "support": "https://www.ozguryazilim.com.tr"
     },
-    "name": "YouTrack Linker",
-    "nameSlug": "youtrack-linker",
-    "classFile": "YouTrackLinkerApp.ts",
-    "description": "Turns YouTrack references into links.",
+    "name": "Özgür Yazılım Issue Tracker",
+    "nameSlug": "ozgurissuetracker",
+    "classFile": "OzgurLinkerApp.ts",
+    "description": "Rocket üzerinden yönlendirme yapmak için kullandığımız linker app'i. (Refs https://github.com/Zakhar-Petrov/rocketchat-youtrack-linker/)",
     "implements": [
         "IPreMessageSentModify",
         "IPreMessageUpdatedModify"
