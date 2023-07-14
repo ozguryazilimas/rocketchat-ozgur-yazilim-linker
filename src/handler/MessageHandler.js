@@ -1,56 +1,70 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MessageHandler = void 0;
+exports.secondStatus = false;
 const TextMessage_1 = require("./TextMessage");
 class MessageHandler {
     constructor(settings) {
         this.settings = settings;
     }
     async checkPreMessageModify(message, read, http) {
-        if (message.text && await this.hasIssues(message.text)) {
+        if ((message.text && await this.hasIssues(message.text)) || (message.text && await this.secondHasIssues(message.text))) {
+            if (message.text && await this.secondHasIssues(message.text))
+                this.secondStatus = true
             return true;
         }
         if (this.settings.isModifyAttachments && message.attachments) {
             for (const attachment of message.attachments) {
-                if (attachment.text && await this.hasIssues(attachment.text)) {
+                if ((attachment.text && await this.hasIssues(attachment.text)) || (attachment.text && await this.secondHasIssues(attachment.text))) {
+                    if (attachment.text && await this.secondHasIssues(attachment.text))
+                        this.secondStatus = true
                     return true;
                 }
             }
         }
-        //return false;
-        this.secondCheckPreMessageModify(message.text, read.text, http.text)
+        //return this.secondCheckPreMessageModify(message.text, read.text, http.text)
     }
-    async secondCheckPreMessageModify(message, read, http) {
-        if (message.text && await this.secondHasIssues(message.text)) {
-            return true;
-        }
-        if (this.settings.isModifyAttachments && message.attachments) {
-            for (const attachment of message.attachments) {
-                if (attachment.text && await this.secondHasIssues(attachment.text)) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
+    // async secondCheckPreMessageModify(message, read, http) {
+    //     if (message.text && await this.secondHasIssues(message.text)) {
+    //         return true;
+    //     }
+    //     if (this.settings.isModifyAttachments && message.attachments) {
+    //         for (const attachment of message.attachments) {
+    //             if (attachment.text && await this.secondHasIssues(attachment.text)) {
+    //                 return true;
+    //             }
+    //         }
+    //     }
+    //     return false;
+    // }
     async executePreMessageModify(message, builder, read, http, persistence) {
         if (message.text) {
-            await this.modifyText(message.text).then((messageText) => builder.setText(messageText));
+            if ( this.secondStatus ) {
+                this.secondModifyText(message.text).then((messageText) => builder.setText(messageText));
+                this.secondStatus = false
+            }
+            else
+                this.modifyText(message.text).then((messageText) => builder.setText(messageText));
         }
         if (this.settings.isModifyAttachments && message.attachments) {
-            await this.modifyAttachments(message.attachments).then((attachments) => builder.setAttachments(attachments));
+            if ( this.secondStatus ) {
+                this.secondModifyAttachments(message.attachments).then((attachments) => builder.setAttachments(attachments));
+                this.secondStatus = false
+            }
+            else
+                this.modifyAttachments(message.attachments).then((attachments) => builder.setAttachments(attachments));
         }
         return builder.getMessage();
     }
-    async secondExecutePreMessageModify(message, builder, read, http, persistence) {
-        if (message.text) {
-            await this.secondModifyText(message.text).then((messageText) => builder.setText(messageText));
-        }
-        if (this.settings.isModifyAttachments && message.attachments) {
-            await this.secondModifyAttachments(message.attachments).then((attachments) => builder.setAttachments(attachments));
-        }
-        return builder.getMessage();
-    }
+    // async secondExecutePreMessageModify(message, builder, read, http, persistence) {
+    //     if (message.text) {
+    //         await this.secondModifyText(message.text).then((messageText) => builder.setText(messageText));
+    //     }
+    //     if (this.settings.isModifyAttachments && message.attachments) {
+    //         await this.secondModifyAttachments(message.attachments).then((attachments) => builder.setAttachments(attachments));
+    //     }
+    //     return builder.getMessage();
+    // }
     async hasIssues(text) {
         return this.textMessage(text).hasIssues();
     }

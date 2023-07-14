@@ -32,7 +32,7 @@ class TextMessage {
         }
     }
     async secondHasIssues() {
-        return !this.issueIterator().next().done;
+        return !this.secondIssueIterator().next().done;
     }
     async secondLinkIssues() {
         let text = this.text;
@@ -42,7 +42,7 @@ class TextMessage {
             const issueIndex = issue.index;
             const issueText = issue.text;
             text = textBefore(issueIndex)
-                + this.markdownIssueLink(issueText)
+                + this.secondMarkdownIssueLink(issueText)
                 + textAfter(issueIndex + issueText.length);
             offset += text.length - lengthBeforeReplacing;
         }
@@ -63,6 +63,10 @@ class TextMessage {
     markdownIssueLink(issueText) {
         const UrlIssueText = issueText.substring(1)
         return `[${issueText}](${this.settings.baseUrl}/${UrlIssueText})`;
+    }
+    secondMarkdownIssueLink(issueText) {
+        const UrlIssueText = issueText.substring(1)
+        return `[${issueText}](${this.settings.secondBaseUrl}/${UrlIssueText})`;
     }
     buildIssuePattern() {
         return Settings_1.Settings.POSITIVE_LOOKBEHIND + this.settings.issuePattern + Settings_1.Settings.POSITIVE_LOOKAHEAD;

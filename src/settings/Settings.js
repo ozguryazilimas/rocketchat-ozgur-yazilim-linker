@@ -116,40 +116,52 @@ class Settings {
                 this.extractedModifyAttachments(setting.value);
                 break;
             case Settings.BASE_URL_SETTING_SECOND_ID:
-                this.extractedBaseUrl(setting.value);
+                this.secondExtractedBaseUrl(setting.value);
                 break;
             case Settings.ISSUE_PATTERN_SETTING_SECOND_ID:
-                this.extractedIssuePattern(setting.value);
+                this.secondExtractedIssuePattern(setting.value);
                 break;
             case Settings.MAX_SEARCH_ATTEMPTS_SECOND_ID:
-                this.extractedMaxSearchAttempts(setting.value);
+                this.secondExtractedMaxSearchAttempts(setting.value);
                 break;
             case Settings.MODIFY_ATTACHMENTS_SECOND_ID:
-                this.extractedModifyAttachments(setting.value);
+                this.secondExtractedModifyAttachments(setting.value);
                 break;
         }
     }
     async setFrom(settings) {
-        this.extractedBaseUrl(await settings.getValueById(Settings.BASE_URL_SETTING_ID),await settings.getValueById(Settings.BASE_URL_SETTING_SECOND_ID));
-        this.extractedIssuePattern(await settings.getValueById(Settings.ISSUE_PATTERN_SETTING_ID),await settings.getValueById(Settings.BASE_URL_SETTING_SECOND_ID));
-        this.extractedMaxSearchAttempts(await settings.getValueById(Settings.MAX_SEARCH_ATTEMPTS_ID),await settings.getValueById(Settings.BASE_URL_SETTING_SECOND_ID));
-        this.extractedModifyAttachments(await settings.getValueById(Settings.MODIFY_ATTACHMENTS_ID),await settings.getValueById(Settings.BASE_URL_SETTING_SECOND_ID));
+        this.extractedBaseUrl(await settings.getValueById(Settings.BASE_URL_SETTING_ID));
+        this.secondExtractedBaseUrl(await settings.getValueById(Settings.BASE_URL_SETTING_SECOND_ID));
+        this.extractedIssuePattern(await settings.getValueById(Settings.ISSUE_PATTERN_SETTING_ID));
+        this.secondExtractedIssuePattern(await settings.getValueById(Settings.ISSUE_PATTERN_SETTING_SECOND_ID));
+        this.extractedMaxSearchAttempts(await settings.getValueById(Settings.MAX_SEARCH_ATTEMPTS_ID));
+        this.secondExtractedMaxSearchAttempts(await settings.getValueById(Settings.MAX_SEARCH_ATTEMPTS_SECOND_ID));
+        this.extractedModifyAttachments(await settings.getValueById(Settings.MODIFY_ATTACHMENTS_ID));
+        this.secondExtractedModifyAttachments(await settings.getValueById(Settings.MODIFY_ATTACHMENTS_SECOND_ID));
     }
-    extractedBaseUrl(value0,value1) {
-        this._baseUrl = value0;
-        this._secondBaseUrl = value1;
+    extractedBaseUrl(value) {
+        this._baseUrl = value;
     }
-    extractedIssuePattern(value0,value1) {
-        this._issuePattern = value0;
-        this._secondIssuePattern = value1;
+    secondExtractedBaseUrl(value) {
+        this._secondBaseUrl = value;
     }
-    extractedMaxSearchAttempts(value0,value1) {
-        this._maxSearchAttempts = value0;
-        this._secondMaxSearchAttempts = value1;
+    extractedIssuePattern(value) {
+        this._issuePattern = value;
     }
-    extractedModifyAttachments(value0,value1) {
-        this._isModifyAttachments = value0;
-        this._secondIsModifyAttachments = value1;
+    secondExtractedIssuePattern(value) {
+        this._secondIssuePattern = value;
+    }
+    extractedMaxSearchAttempts(value) {
+        this._maxSearchAttempts = value;
+    }
+    secondExtractedMaxSearchAttempts(value) {
+        this._secondMaxSearchAttempts = value;
+    }
+    extractedModifyAttachments(value) {
+        this._isModifyAttachments = value;
+    }
+    secondExtractedModifyAttachments(value) {
+        this._secondIsModifyAttachments = value;
     }
 }
 exports.Settings = Settings;
@@ -160,8 +172,8 @@ Settings.EXCLUDE_PATTERNS = '\\`\\`\\`[^\\`]+\\`\\`\\`' +
     '|\\[[^\\[\\]]+\\]\\([^\\(\\)]+\\)';
 Settings.POSITIVE_LOOKBEHIND = '(?<=^|[^a-zA-Z0-9])';
 Settings.POSITIVE_LOOKAHEAD = '(?=[^a-zA-Z0-9]|$)';
-Settings.DEFAULT_BASE_URL = 'https://islergucler.ozguryazilim.com.tr';
-Settings.DEFAULT_ISSUE_PATTERN = '[a-zA-Z]+-[0-9]+';
+Settings.DEFAULT_BASE_URL = 'https://islergucler.ozguryazilim.com.tr/issues';
+Settings.DEFAULT_ISSUE_PATTERN = '#(\\S+)';
 Settings.DEFAULT_MAX_SEARCH_ATTEMPTS = 25;
 Settings.DEFAULT_MODIFY_ATTACHMENTS = false;
 Settings.BASE_URL_SETTING_ID = 'base-url';
